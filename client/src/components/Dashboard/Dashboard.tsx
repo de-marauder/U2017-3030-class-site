@@ -11,14 +11,14 @@ export const Dashboard: React.FC<{ children: ReactNode }> = ({ children }) => {
         navigate('/')
     }
     return (
-        <div className={classes.Dashboard}>
-            <Floater>
+        <Floater>
+            <div className={classes.Dashboard}>
                 <DashboardNavbar clearCreds={clearCreds} />
                 <div className={classes.DashboardLayout}>
                     {/* <Sidebar/> */}
                     {children}
                 </div>
-            </Floater>
-        </div>
+            </div>
+        </Floater>
     )
 } 

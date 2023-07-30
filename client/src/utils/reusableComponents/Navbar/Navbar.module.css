@@ -1,14 +1,19 @@
-.Navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.NavbarWrapper {
     position: fixed;
     left: 0;
     top: 0;
     background-color: var(--dark-color);
     width: 100%;
-    padding: 2rem 1rem 1rem;
     z-index: 100;
+}
+
+.Navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0rem 1rem;
+    max-width: 1280px;
+    margin: auto;
 }
 
 .Buttons {

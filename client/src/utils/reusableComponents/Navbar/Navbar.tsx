@@ -16,27 +16,29 @@ export const Navbar = () => {
     })
 
     return (
-        <nav className={classes.Navbar}>
-            <div>
-                <Link to={'/'}>
-                    <Logo />
-                </Link>
-            </div>
-            <div className={classes.Buttons}>
-                {isLoggedIn ? <Button onClick={() => navigate('/user')} >DashBoard</Button>
-                    : (
-                        <>
-                            <div>
-                                <Button onClick={() => navigate('/login')}>Log in</Button>
-                            </div>
-                            <div>
-                                <Button onClick={() => navigate('/signup')}>Sign Up</Button>
-                            </div>
-                        </>
-                    )
-                }
-            </div>
-        </nav>
+        <div className={classes.NavbarWrapper}>
+            <nav className={classes.Navbar}>
+                <div>
+                    <Link to={'/'}>
+                        <Logo />
+                    </Link>
+                </div>
+                <div className={classes.Buttons}>
+                    {isLoggedIn ? <Button onClick={() => navigate('/user')} >DashBoard</Button>
+                        : (
+                            <>
+                                <div>
+                                    <Button onClick={() => navigate('/login')}>Log in</Button>
+                                </div>
+                                <div>
+                                    <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+                                </div>
+                            </>
+                        )
+                    }
+                </div>
+            </nav>
+        </div>
     )
 }
 
