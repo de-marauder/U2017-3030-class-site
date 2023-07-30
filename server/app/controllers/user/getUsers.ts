@@ -22,6 +22,7 @@ export const getOneUser = ErrorHandler(async (req: Request, res: Response) => {
 
 export const getAllUsers = ErrorHandler(async (req: Request, res: Response) => {
     const users = await UserModel.find()
+        .sort({matNo: 1})
         .catch((err: Error) => {
             console.log(err);
             throw new CustomError('Error while getting user', 500);

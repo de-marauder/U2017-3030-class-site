@@ -1,4 +1,4 @@
-import {Schema, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TypeUser } from '../types/user';
 import { string } from 'joi';
 
@@ -7,9 +7,9 @@ const USER_ROLES_ENUM = {
     REGULAR: 'REGULAR'
 }
 export const USER_ROLES = Object.values(USER_ROLES_ENUM)
-export const ADMIN_ROLES = Object.values(USER_ROLES_ENUM).filter((el)=>el.toLowerCase().includes('admin'))
+export const ADMIN_ROLES = Object.values(USER_ROLES_ENUM).filter((el) => el.toLowerCase().includes('admin'))
 
-const UserSchema = new Schema<TypeUser>({
+const UserSchema = new Schema<TypeUser & { no: number }>({
     firstName: String,
     otherName: String,
     lastName: String,
@@ -19,11 +19,12 @@ const UserSchema = new Schema<TypeUser>({
     img: String,
     state: String,
     phone: String,
-    password: {type: String, select: false},
+    password: { type: String, select: false },
     matNo: {
         type: String,
         required: true
     },
+    no: { type: Number },
     role: {
         type: String, default: 'REGULAR', enum: [...Object.values(USER_ROLES_ENUM)]
     },
@@ -35,12 +36,6 @@ const UserSchema = new Schema<TypeUser>({
     authToken: {
         type: String, select: false
     }
-},{timestamps: true})
+}, { timestamps: true })
 
-export const UserModel = model<TypeUser>('userModel', UserSchema, 'userModel');
-
-UserSchema.pre('save', (next)=>{
-
-    console.log('this user', this)
-    next()
-})
+export const UserModel = model<TypeUser & { no: number }>('userModel', UserSchema, 'userModel');

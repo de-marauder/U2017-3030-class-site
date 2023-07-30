@@ -14,8 +14,8 @@ export const UserCard: React.FC<UserCardProps> = ({el}) => {
             </div>
             <div className={classes.UserCardDescription}>
                 <p><span className={classes.DescLabel}>Name:</span> <span>{el.lastName && el.lastName}  {el.firstName && el.firstName} {el.otherName && el.otherName} </span> </p>
-                <p><span className={classes.DescLabel}>email:</span> <span>{el.email && el.email} </span></p>
-                <p><span className={classes.DescLabel}>phone:</span> <span> {el.phone && el.phone} </span></p>
+                <p><span className={classes.DescLabel}>E-mail:</span> <span>{el.email && el.email} </span></p>
+                <p><span className={classes.DescLabel}>Phone:</span> <span> {el.phone && el.phone} </span></p>
                 <p><span className={classes.DescLabel}>Mat. No.:</span> <span>{el.matNo && el.matNo}</span> </p>
                 <p><span className={classes.DescLabel}>Date of birth:</span> <span>{el.dob && formatDate(el.dob, { normal: true })}</span> </p>
                 <p><span className={classes.DescLabel}>LGA:</span> <span>{el.lga && el.lga} </span></p>

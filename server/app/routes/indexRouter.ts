@@ -8,6 +8,6 @@ export const baseRouter = Router()
 
 
 baseRouter.use('/auth', authRouter)
-baseRouter.use(verifyUserToken)
 baseRouter.use('/users', userRouter)
+baseRouter.use(verifyUserToken)
 baseRouter.use('/s3', s3Router)

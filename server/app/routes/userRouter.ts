@@ -2,9 +2,10 @@ import { Router } from "express";
 import { createUser } from "../controllers/user/create";
 import { getAllUsers, getOneUser } from "../controllers/user/getUsers";
 import { updateUser } from "../controllers/user/updateUser";
+import { verifyUserToken } from "../middleware/auth";
 
 export const userRouter = Router()
 
 userRouter.get('/', getAllUsers);
-userRouter.get('/:userId', getOneUser);
-userRouter.patch('/:userId', updateUser);
+userRouter.get('/:userId', verifyUserToken, getOneUser);
+userRouter.patch('/:userId', verifyUserToken, updateUser);

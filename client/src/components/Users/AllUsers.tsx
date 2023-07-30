@@ -8,10 +8,12 @@ import { ImageWrapper } from "../../utils/reusableComponents/ImageWrapper"
 import uniportLogo from '../../assets/images/uniport_logo.png';
 import { Button } from "../../utils/reusableComponents/Button/Button"
 import ReactToPrint from "react-to-print"
+import { ErrorMessageModal } from "../../utils/reusableComponents/ErrorMessgeModal"
 
 
 export const AllUsers = () => {
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState<string>('')
     const [users, setUsers] = useState<TypeUser[]>([])
     const printableContent = useRef(null)
     useEffect(() => {
@@ -20,7 +22,8 @@ export const AllUsers = () => {
         API.getAllUsers().then((res) => res.json())
             .then((response) => {
                 console.log('response: ', response)
-                setUsers((prevUsers) => prevUsers = response.data.users);
+                if (response.status === 'failed') setErrorMessage(response.message || 'Error getting class members')
+                setUsers((prevUsers) => prevUsers = response?.data?.users);
             })
     }, [])
     console.log('users: ', users)
@@ -29,18 +32,18 @@ export const AllUsers = () => {
         maxHeight: '150px',
         margin: '1rem auto'
     }
-    const buttonStyles ={
+    const buttonStyles = {
         position: 'fixed',
         top: '2rem',
         zIndex: '1001'
     }
     return (
         <>
-        <ReactToPrint 
-        content={()=>printableContent.current}
+            <ReactToPrint
+                content={() => printableContent.current}
                 trigger={() => <Button style={buttonStyles} onClick={() => { window.print() }}>Print</Button>}
-         />
-        
+            />
+            {errorMessage && <ErrorMessageModal errorMessage={errorMessage} />}
             <div ref={printableContent} className={classes.Album}>
                 <h2>Chemical Engineering UNIPORT</h2>
                 <ImageWrapper style={logoWrapperStyles} imageLink={uniportLogo} imageAlt="uniport logo" />

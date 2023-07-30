@@ -1,7 +1,7 @@
 .DashboardLayout {
     padding-top: clamp(12vh, 4rem, 14vh);
     height: calc(100vh - 4rem);
-
+    z-index: 10;
 }
 
 .Dashboard {
