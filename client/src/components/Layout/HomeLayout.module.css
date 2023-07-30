@@ -1,0 +1,10 @@
+.homeLayout {
+    position: relative;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+.children {
+    padding-top: clamp(12vh, 4rem, 14vh);
+    height: calc(100vh - 4rem);
+}

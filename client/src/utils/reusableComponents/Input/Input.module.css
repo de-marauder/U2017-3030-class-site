@@ -1,0 +1,18 @@
+.Input {
+    padding: .5rem;
+    background-color: #ccc;
+    color: var(--dark-color);
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    flex-grow: 1;
+}
+.Label {
+    font-weight: bolder;
+    font-size: 1.1em;
+}
+
+.InputWrapper {
+    margin: 1rem;
+    display: flex;
+}

@@ -1,0 +1,43 @@
+.UserCard {
+    border-radius: 10px;
+    background-color: var(--light-color);
+    border: 1px solid #ccc;
+    max-width: 200px;
+    max-height: 300px;
+    overflow: hidden;
+    flex: 0 0 33%;
+}
+
+.UserCardImage {
+    height: 150px;
+}
+
+.UserCardImage img {
+    width: 100%;
+    height: 100%;
+}
+
+.UserCardDescription {
+    color: var(--dark-color);
+    padding: .5rem;
+    font-size: .7em;
+    background-color: #eee;
+}
+
+.UserCardDescription p {
+    text-align: left;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+}
+.UserCardDescription p .DescLabel {
+    font-style: italic;
+    font-weight: bolder;
+    color: #121212;
+}
+.UserCardDescription p span {
+    flex: '0 0 50%';
+    font-style: italic;
+    color: #121212;
+}

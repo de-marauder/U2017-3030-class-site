@@ -1,0 +1,18 @@
+.FormWrapper {
+    border-radius: var(--border-radius);
+    border-width: 2px 0;
+    border-color: var(--light-color);
+    border-style: solid;
+    padding: .8rem 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    /* margin-bottom: 1rem; */
+}
+
+.Form {
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    color: var(--dark-color);
+    /* margin-bottom: 1rem; */
+}
