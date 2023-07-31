@@ -13,6 +13,11 @@ export const createUser = ErrorHandler(async (req: Request, res: Response) => {
         console.log(err)
     })
     if (userExist) return res.status(400).json({ status: 'failed', message: 'User with this email already exists' })
+    const userExist2 = await UserModel.findOne({ matNo: data.matNo }).catch((err: Error) => {
+        console.log('Problem getting a user')
+        console.log(err)
+    })
+    if (userExist2) return res.status(400).json({ status: 'failed', message: 'User with this mat number already exists' })
     // const user = await UserModel.findOneAndUpdate({ matNo: data.matNo }, data, { runValidators: true, returnOriginal: false });
     // if (!user) throw new CustomError('This mat. no does not exist. Contact admin', 404)
     const user = new UserModel(data)
