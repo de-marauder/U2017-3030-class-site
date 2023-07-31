@@ -1,11 +1,14 @@
-import { Modal } from "./Modal"
+import { Modal } from "./Modal/Modal"
 
 type ErrorMessageModalProps = {
-    errorMessage: string
+    errorMessage: string;
+    onClick: () => void
 }
 
-export const ErrorMessageModal: React.FC<ErrorMessageModalProps> = ({errorMessage}) => {
-    return <Modal>
-        <p style={{color: 'red'}}>{errorMessage}</p>
-    </Modal>
+export const ErrorMessageModal: React.FC<ErrorMessageModalProps> = ({ errorMessage, onClick }) => {
+    return (
+        <Modal onClick={onClick}>
+            <p style={{ color: 'red' }}>{errorMessage}</p>
+        </Modal>
+    )
 }

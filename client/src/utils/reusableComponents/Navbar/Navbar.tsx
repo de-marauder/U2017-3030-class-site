@@ -13,7 +13,7 @@ export const Navbar = () => {
             setIsLoggedIn(true)
             // return navigate('/user')
         }
-    },[isLoggedIn])
+    }, [isLoggedIn])
 
     return (
         <div className={classes.NavbarWrapper}>
@@ -53,16 +53,18 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ clearCreds }) 
     }
 
     return (
-        <nav className={classes.Navbar}>
-            <div>
-                <Link to={'/'}>
-                    <Logo />
-                </Link>
-            </div>
-            <div style={style}>
-                <Button onClick={() => { navigate('/users') }}>Class Members</Button>
-                <Button style={{ backgroundColor: '#9d0202' }} onClick={clearCreds}>Log out</Button>
-            </div>
-        </nav>
+        <div className={classes.NavbarWrapper}>
+            <nav className={classes.Navbar}>
+                <div>
+                    <Link to={'/'}>
+                        <Logo />
+                    </Link>
+                </div>
+                <div style={style}>
+                    <Button onClick={() => { navigate('/users') }}>Class Members</Button>
+                    <Button style={{ backgroundColor: 'var(--red-color)' }} onClick={clearCreds}>Log out</Button>
+                </div>
+            </nav>
+        </div>
     )
 }

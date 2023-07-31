@@ -17,8 +17,8 @@ export const AllUsers = () => {
     const [users, setUsers] = useState<TypeUser[]>()
     const printableContent = useRef(null)
     useEffect(() => {
-        const token = window.localStorage.getItem('token')
-        if (!token) return navigate('/login')
+        // const token = window.localStorage.getItem('token')
+        // if (!token) return navigate('/login')
         API.getAllUsers().then((res) => res.json())
             .then((response) => {
                 console.log('response: ', response)
@@ -26,7 +26,7 @@ export const AllUsers = () => {
                 setUsers([...response?.data?.users]);
             })
     }, [navigate])
-    console.log('users: ', typeof users, users)
+    // console.log('users: ', typeof users, users)
     const logoWrapperStyles = {
         maxWidth: '150px',
         maxHeight: '150px',
@@ -43,7 +43,7 @@ export const AllUsers = () => {
                 content={() => printableContent.current}
                 trigger={() => <Button style={buttonStyles} onClick={() => { window.print() }}>Print</Button>}
             />
-            {errorMessage && <ErrorMessageModal errorMessage={errorMessage} />}
+            {errorMessage && <ErrorMessageModal onClick={()=>setErrorMessage('')} errorMessage={errorMessage} />}
             <div ref={printableContent} className={classes.Album}>
                 <h2>Chemical Engineering UNIPORT</h2>
                 <ImageWrapper style={logoWrapperStyles} imageLink={uniportLogo} imageAlt="uniport logo" />

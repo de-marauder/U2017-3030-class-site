@@ -76,7 +76,7 @@ export default function SignUp() {
     return (
         <>
             <h1>Sign Up</h1>
-            {signUpError && <ErrorMessageModal errorMessage={signUpError} />}
+            {signUpError && <ErrorMessageModal onClick={()=>setSignUpError('')} errorMessage={signUpError} />}
             <section className={classes.Signup}>
                 <Form>
                     <div >

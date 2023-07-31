@@ -80,7 +80,7 @@ export default function Login() {
         <>
             <h1>Login</h1>
             <section className={classes.Login}>
-                {loginError && <ErrorMessageModal errorMessage={loginError} />}
+                {loginError && <ErrorMessageModal onClick={()=>setLoginError('')} errorMessage={loginError} />}
                 <Form>
                     <div >
                         {LoginForm}

@@ -46,7 +46,7 @@ export const login = ErrorHandler(async (req: Request, res: Response) => {
         console.log(err)
         throw new CustomError('Error getting user', 500)
     })
-    if (!userExist) throw new CustomError('Mat no. or E-mail does not match', 404)
+    if (!userExist) throw new CustomError('Mat no. and E-mail does not match', 404)
     if (!userExist.isActivated) throw new CustomError('User with this mat no. has not been activated. Please sign up', 400)
 
     const isMatch = await comparePassword(data.password, userExist.password);

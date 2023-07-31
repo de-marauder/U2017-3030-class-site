@@ -3,3 +3,12 @@
     max-width: 600px;
     padding: 2rem;
 }
+
+@media (max-width: 500px) {
+    
+    .Login {
+        /* margin-inline: 0; */
+        width: 100vw;
+        padding-inline: 0;
+    }
+}

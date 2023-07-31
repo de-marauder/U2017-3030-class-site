@@ -11,7 +11,7 @@ import { buildPayload, checkCanSubmit, setFormDataHelper, storeTokenAndUser } fr
 import { ImageWrapper } from '../../utils/reusableComponents/ImageWrapper';
 import portrait from '../../assets/images/Portrait_Placeholder.png'
 import { defaultUpdateUserMessage } from '../../utils/vars';
-import { Modal } from '../../utils/reusableComponents/Modal';
+import { Modal } from '../../utils/reusableComponents/Modal/Modal';
 import { Form } from '../../utils/reusableComponents/Form/Form';
 import { Button } from '../../utils/reusableComponents/Button/Button';
 
@@ -233,11 +233,11 @@ export const UserDetails = () => {
             <br />
             <section>
                 {popUpMessage && (
-                    <Modal>
+                    <Modal onClick={() => setPopUpMessage('')}>
                         <p>{popUpMessage}</p>
                     </Modal>)
                 }
-                {errorMessage && <ErrorMessageModal errorMessage={errorMessage} />}
+                {errorMessage && <ErrorMessageModal onClick={()=>setErrorMessage('')} errorMessage={errorMessage} />}
                 <Form >
                     {user && (
                         <div >

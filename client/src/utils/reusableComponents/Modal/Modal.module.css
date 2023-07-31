@@ -1,0 +1,57 @@
+.ModalWrapper {
+    display: grid;
+    place-items: center;
+}
+.Modal {
+    position: relative;
+    max-width: 500px;
+    min-width: 250px;
+    min-height: 150px;
+    display: grid;
+    place-items: center;
+    max-height: 500px;
+    font-weight: bold;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    background-color: hsla(0, 0%, 100%, 0.292);
+    backdrop-filter: blur(5px);
+    color: var(--dark-color);
+    box-shadow: 0 0 2rem var(--dark-color);
+    animation: slide-in .1s linear forwards 1;
+}
+
+.Backdrop {
+    z-index: 1000;
+    background-color: hsla(0, 0%, 0%, 0.285);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.CloseModal {
+    position: absolute;
+    right: 0rem;
+    top: 0rem;
+    padding: .25rem;
+    background-color: var(--dark-color);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    color: var(--light-color);
+}
+.CloseModal:hover {
+    background-color: var(--red-color);
+}
+
+@keyframes slide-in {
+    0% {
+        bottom: -10%;
+        scale: 70%;
+    }
+    to {
+        bottom: 0;
+        scale: 100%;
+    }
+}

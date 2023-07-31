@@ -3,3 +3,10 @@
     max-width: 600px;
     padding: 2rem;
 }
+@media (max-width: 500px) {
+
+    .Signup {
+        width: 100vw;
+        padding-inline: 0;
+    }
+}

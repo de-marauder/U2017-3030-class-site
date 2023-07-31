@@ -16,3 +16,11 @@
     margin: 1rem;
     display: flex;
 }
+
+@media (max-width: 500px) {
+    
+    .InputWrapper {
+        flex-direction: column;
+        width: 90%;
+    }
+}
