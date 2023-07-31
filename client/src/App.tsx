@@ -13,7 +13,7 @@ export const Home: React.FC<MyAppProps> = ({ children }) => {
   return (
     <>
       <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', justifyContent: 'center' }}>
-        <h1>U2017 Class Album</h1>
+        <h1>U2017/30300xx Class Album</h1>
         <Button onClick={() => navigate('/users')}>View Class Members</Button>
         {children}
       </div>

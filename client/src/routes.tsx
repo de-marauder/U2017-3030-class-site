@@ -1,5 +1,5 @@
 import {
-    createBrowserRouter, useNavigate,
+    createBrowserRouter,
 } from "react-router-dom";
 import SignUp from "./components/SignUp/SignUp";
 import { AllUsers } from "./components/Users/AllUsers";

@@ -52,9 +52,7 @@ export const formatDate = (date: string, config?: {normal?: boolean}) => {
 export const setFormDataHelper = (response: GetUserAPIResponse, prevData: UserFormData) => {
     const newData: Partial<TypeUser> = {}
     for (const [k, v] of Object.entries(response.data.user)) {
-        console.log(k, v)
-        console.log(prevData.hasOwnProperty(k))
-        if (prevData.hasOwnProperty(k)) newData[k as keyof typeof newData] = v as string;
+        if (prevData[k as keyof typeof prevData]) newData[k as keyof typeof newData] = v as string;
     }
     console.log('newData: ', newData)
     return {

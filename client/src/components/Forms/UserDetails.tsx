@@ -110,11 +110,11 @@ export const UserDetails = () => {
                 });
                 imgUrl && setUser((prevData) => {
                     const tkn = window.localStorage.getItem('token')
-                    if (tkn) storeTokenAndUser(response.data.user, tkn)
+                    if (tkn) storeTokenAndUser(response?.data?.user, tkn)
 
                     return {
                         ...prevData,
-                        img: response.data.user.img
+                        img: response?.data?.user.img
                     }
                 })
             }
@@ -137,7 +137,7 @@ export const UserDetails = () => {
             }).then((response: GetUserAPIResponse) => {
                 console.log('response: ', response)
                 if (!response) { setErrorMessage('Could not retrieve user data'); return }
-                setUser(() => response.data.user);
+                setUser(() => response.data?.user);
                 storeTokenAndUser(user, tkn)
                 setFormData((prevData) => {
                     return setFormDataHelper(response, prevData)
@@ -148,7 +148,7 @@ export const UserDetails = () => {
             });
         }, 0)
         return () => clearTimeout(getUserApiTimeout)
-    }, []);
+    }, [navigate]);
 
     const profilePictureStyles = {
         borderRadius: '50%',
@@ -157,14 +157,16 @@ export const UserDetails = () => {
         height: '200px',
         backgroundColor: 'var(--dark-color)'
     }
+    const flexWrap = 'wrap'
     const inputsWrapperStyles = {
         margin: '2rem 1rem',
         display: 'flex',
-        flexWrap: 'wrap' as 'wrap',
+        flexWrap: flexWrap as 'wrap'
     }
+    const flexDirection = 'column'
     const inputWrapperStyles = {
         display: 'flex',
-        flexDirection: 'column' as 'column',
+        flexDirection,
     }
     const inputComponentWrapperStyles = {
         flex: '0 0 50%',

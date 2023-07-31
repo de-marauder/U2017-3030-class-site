@@ -24,7 +24,7 @@ export type DefaultHeadersType = {
     'authorization'?: string
 }
 
-export type ObjectWithAnyProperties = Record<string, any>
+export type ObjectWithAnyProperties = Record<string, string>
 
 export type FailedResponse = { status: string, message: string }
 export type GetUserAPIResponse = { data: { user: Required<TypeUserWithId> }, status: string, message?: string }

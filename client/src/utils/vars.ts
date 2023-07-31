@@ -1,4 +1,4 @@
-export const API_BASE_URL = `http://localhost:8080/api/v1`
+export const API_BASE_URL = `${import.meta.env.VITE_APP_API_BASE_URL_DEV}/api/v1`
 
 export const matNoRegex = /^U201[7, 8]\/30300[0-6][0-9]$/;
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

@@ -14,7 +14,7 @@ import { ErrorMessageModal } from "../../utils/reusableComponents/ErrorMessgeMod
 export const AllUsers = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [users, setUsers] = useState<TypeUser[]>([])
+    const [users, setUsers] = useState<TypeUser[]>()
     const printableContent = useRef(null)
     useEffect(() => {
         const token = window.localStorage.getItem('token')
@@ -23,10 +23,10 @@ export const AllUsers = () => {
             .then((response) => {
                 console.log('response: ', response)
                 if (response.status === 'failed') setErrorMessage(response.message || 'Error getting class members')
-                setUsers((prevUsers) => prevUsers = response?.data?.users);
+                setUsers([...response?.data?.users]);
             })
-    }, [])
-    console.log('users: ', users)
+    }, [navigate])
+    console.log('users: ', typeof users, users)
     const logoWrapperStyles = {
         maxWidth: '150px',
         maxHeight: '150px',

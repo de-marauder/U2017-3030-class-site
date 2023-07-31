@@ -13,7 +13,7 @@ export const Navbar = () => {
             setIsLoggedIn(true)
             // return navigate('/user')
         }
-    })
+    },[isLoggedIn])
 
     return (
         <div className={classes.NavbarWrapper}>

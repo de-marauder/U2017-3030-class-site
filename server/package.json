@@ -6,7 +6,9 @@
   "author": "de-marauder",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "nodemon index.ts",
+    "build": "rm -rf ./build && mkdir build && cp .env ./build/ && tsc -p .",
+    "prod": "node ./build/index.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1423.0",

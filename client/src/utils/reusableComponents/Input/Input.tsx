@@ -1,8 +1,8 @@
 import { toTitleCase } from "../../functions"
 import classes from './Input.module.css'
 
-type FormType = Record<string, any>
-type ErrorType = Record<string, any>
+type FormType = Record<string, string>
+type ErrorType = Record<string, string>
 type InputComponentProps = {
     k: string,
     value: string,
@@ -22,7 +22,7 @@ export const Input: React.FC<InputComponentProps> = ({ inputWrapperStyles, k, va
                 <input className={classes.Input} required disabled={disabled} name={k} type={type} value={type !== 'file' ? value : ''} onChange={(e) => {
                     setFormData((prevState) => {
                         prevState[k as keyof typeof prevState] = (e.target as HTMLInputElement).value
-                        checkCanSubmit(prevState)
+                        checkCanSubmit(prevState as Required<FormType>)
                         return { ...prevState }
                     })
                 }} />
