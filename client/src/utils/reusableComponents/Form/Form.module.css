@@ -14,7 +14,6 @@
     border-radius: var(--border-radius);
     padding: 1rem;
     color: var(--dark-color);
-    /* margin-bottom: 1rem; */
 }
 
 @media (max-width: 500px) {
@@ -22,5 +21,8 @@
     .FormWrapper {
         flex-direction: column;
         width: 100%;
+    }
+    .Form {
+        padding-inline: 0
     }
 }

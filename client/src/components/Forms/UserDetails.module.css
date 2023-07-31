@@ -1,0 +1,12 @@
+@media (max-width: 500px) {
+    .ProfilePicture {
+        position: relative !important;
+        left: -50% !important;
+        transform: translateX(60%) translateY(50%);
+    }
+
+    .FormInputs {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

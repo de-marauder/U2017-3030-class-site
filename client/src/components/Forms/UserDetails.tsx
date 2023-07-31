@@ -14,7 +14,7 @@ import { defaultUpdateUserMessage } from '../../utils/vars';
 import { Modal } from '../../utils/reusableComponents/Modal/Modal';
 import { Form } from '../../utils/reusableComponents/Form/Form';
 import { Button } from '../../utils/reusableComponents/Button/Button';
-
+import classes from './UserDetails.module.css'
 
 type SecureUrlType = string | undefined
 
@@ -171,8 +171,6 @@ export const UserDetails = () => {
     const inputComponentWrapperStyles = {
         flex: '0 0 50%',
         width: '45%',
-        paddingRight: '1rem',
-        marginBottom: '1rem'
     }
 
     const formInputs = ((() => {
@@ -185,7 +183,7 @@ export const UserDetails = () => {
             if (key === 'dob') type = 'date'
             if (key === 'phone') type = 'tel'
             return (
-                <div key={id} style={inputComponentWrapperStyles}>
+                <div key={id} className={classes.FormInputs} style={inputComponentWrapperStyles}>
                     <Input k={key}
                         inputWrapperStyles={inputWrapperStyles}
                         value={value}
@@ -203,7 +201,7 @@ export const UserDetails = () => {
     const profilePicture = (
         <div style={{ margin: '1rem auto', width: 'fit-content', position: 'relative' }}>
             <ImageWrapper style={profilePictureStyles} imageLink={user?.img ? user?.img : portrait} imageAlt='profile picture' />
-            <div style={{ marginTop: '-5%', position: 'absolute', left: '110%', top: '50%' }} >
+            <div className={classes.ProfilePicture} style={{ marginTop: '-5%', position: 'absolute', left: '110%', top: '50%' }} >
                 <p style={{ textAlign: 'left' }}>Update Profile Picture</p>
                 <input required value={formData.file} type="file" onChange={(e) => {
                     const files = (e.target as HTMLInputElement).files

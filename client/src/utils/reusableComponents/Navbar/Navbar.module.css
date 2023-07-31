@@ -20,3 +20,15 @@
     display: flex;
     gap: 1rem
 }
+
+@media (max-width: 500px) {
+    .Navbar {
+        width: 100vw;
+    }
+    .Navbar h2 {
+        font-size: 1rem;
+    }
+    .Navbar button {
+        font-size: .8rem;
+    }
+}

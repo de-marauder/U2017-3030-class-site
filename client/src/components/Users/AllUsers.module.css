@@ -1,24 +1,43 @@
+.AlbumWrapper {
+    position: relative;
+}
 .Album {
-    background-color: var(--light-color);
+    background-color: #fff;
     color: var(--dark-color);
     min-height: 100%;
     margin: 1rem auto;
     max-width: 800px;
     padding: 1rem;
-    padding-bottom: 3rem;;
+    padding-bottom: 3rem;
+    ;
     border-radius: var(--border-radius);
 }
-
 .Album h2 {
     margin: 1rem auto;
     text-align: center;
 }
-
 .Members {
-    margin: 2rem auto 1rem ;
+    margin: 2rem auto 1rem;
     width: 90%;
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
     justify-content: space-between;
+}
+@media (max-width:500px) {
+    .Members {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .Members>div {
+        margin: auto;
+    }
+    .AlbumWrapper>button {
+        right: 2rem !important;
+        background-color: var(--dark-color);
+        color: var(--light-color);
+        top: 70% !important;
+        border: solid 1px var(--red-color);
+        position: fixed;
+    }
 }

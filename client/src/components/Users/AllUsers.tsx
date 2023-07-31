@@ -38,7 +38,7 @@ export const AllUsers = () => {
         zIndex: '1001'
     }
     return (
-        <>
+        <div className={classes.AlbumWrapper}>
             <ReactToPrint
                 content={() => printableContent.current}
                 trigger={() => <Button style={buttonStyles} onClick={() => { window.print() }}>Print</Button>}
@@ -56,6 +56,6 @@ export const AllUsers = () => {
                     })}
                 </div>
             </div>
-        </>
+        </div>
     )
 } 
