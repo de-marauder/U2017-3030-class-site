@@ -2,8 +2,8 @@
     border-radius: 10px;
     background-color: var(--light-color);
     border: 1px solid #ccc;
-    max-width: 200px;
-    max-height: 300px;
+    max-width: 219px;
+    max-height: 320px;
     overflow: hidden;
     flex: 0 0 33%;
 }
@@ -22,6 +22,7 @@
     padding: .5rem;
     font-size: .7em;
     background-color: #eee;
+    height: 100%;
 }
 
 .UserCardDescription p {
