@@ -42,15 +42,14 @@ export const Dashboard: React.FC<{ children: ReactNode }> = ({ children }) => {
         const getUserApiTimeout = setTimeout(() => {
 
             API.getUser(user._id).then((res) => res.json()).then((response: GetUserAPIResponse) => {
-                console.log('response: ', response)
                 if (!response) { setErrorMessage('Could not retrieve user data'); return }
-                if (response.status === 'failed' && response.message === 'user not logged in') {
-                    setTimeout(()=>{
-                        setIsLoading(false)
-                        setErrorMessage(response.message || 'You are no longer logged in. Please login again')
-                        window.localStorage.clear();
-                        navigate('/login')
-                    }, 2000);
+                if (response.status === 'failed' && response.message !== undefined) {
+                    // setTimeout(()=>{
+                    setIsLoading(false)
+                    setErrorMessage(response.message || 'You are no longer logged in. Please login again')
+                    window.localStorage.clear();
+                    navigate('/login')
+                    // }, 2000);
                     return
                 }
                 setUser(() => response.data?.user);
