@@ -15,13 +15,15 @@ import { Modal } from '../../utils/reusableComponents/Modal/Modal';
 import { Form } from '../../utils/reusableComponents/Form/Form';
 import { Button } from '../../utils/reusableComponents/Button/Button';
 import classes from './UserDetails.module.css'
+import { SpinnerModal } from '../../utils/reusableComponents/Spinner/Spinner';
 
 type SecureUrlType = string | undefined
 
 
 export const UserDetails = () => {
     const navigate = useNavigate()
-    const [popUpMessage, setPopUpMessage] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [popupMessage, setPopupMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [formError, setFormError] = useState<UserFormData>({
         first_name: '',
@@ -66,8 +68,8 @@ export const UserDetails = () => {
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         try {
+            setIsLoading(true)
             setErrorMessage('')
-            setPopUpMessage('Sending...')
 
             if (user) {
                 e.preventDefault();
@@ -76,7 +78,7 @@ export const UserDetails = () => {
 
                 // Get secure url from server
                 if (file) {
-                    const objectName = formData.matNo as string + `-${randomatic('0', 4)}`
+                    const objectName = formData.matriculation_number as string + `-${randomatic('0', 4)}`
                     url = (await API.getS3SecureUrl({ objectName, key: 'photos' }).then((res) => res.json() as Promise<{ url: SecureUrlType }>)).url;
                     if (!url) throw new Error('Url undefined');
                     // Post image to s3
@@ -87,63 +89,60 @@ export const UserDetails = () => {
                 const imgUrl = url?.split('?')[0]
                 const payload = buildPayload(formData as Required<typeof formData>) as Required<TypeUser>
                 if (imgUrl) payload.img = imgUrl
-                const response = await API.updateUser(user?._id, payload)
-                    .then(res => {
-                        setPopUpMessage('')
-                        const r = res.json() as Promise<GetUserAPIResponse>;
-                        if (!res.ok) setErrorMessage(defaultUpdateUserMessage)
-                        return r
+                await API.updateUser(user?._id, payload)
+                    .then(res => res.json())
+                    .then((response: GetUserAPIResponse) => {
+                        setIsLoading(false)
+                        if (!response) throw new Error('Bad response')
+                        if (response.status === 'failed') {
+                            setErrorMessage(response.message || defaultUpdateUserMessage); return
+                        }
+                        setFormData((prevData) => {
+                            return setFormDataHelper(response.data.user, prevData)
+                        });
+                        setUser((prevData) => {
+                            const tkn = window.localStorage.getItem('token')
+                            if (tkn) storeTokenAndUser(response?.data?.user, tkn)
+
+                            return {
+                                ...prevData,
+                                img: response?.data?.user.img
+                            }
+                        })
+                        setPopupMessage('Profile updated!')
+                        setTimeout(() => setPopupMessage(''), 2000)
                     })
                     .catch((err) => {
                         console.log('Fetch error', err.message)
                         setErrorMessage(err.message || 'Fetch error')
                     })
-                if (!response) throw new Error('Bad response')
-                if (response.status === 'failed') {
-                    setErrorMessage(response.message || defaultUpdateUserMessage); return
-                }
-
-                setPopUpMessage('Update done')
-                setTimeout(() => { setPopUpMessage('') }, 3000)
-                setFormData((prevData) => {
-                    return setFormDataHelper(response, prevData)
-                });
-                imgUrl && setUser((prevData) => {
-                    const tkn = window.localStorage.getItem('token')
-                    if (tkn) storeTokenAndUser(response?.data?.user, tkn)
-
-                    return {
-                        ...prevData,
-                        img: response?.data?.user.img
-                    }
-                })
             }
+
         } catch (error) {
             setErrorMessage((error as Error).message || 'Something bad happened')
         }
     }
-    console.log('formData: ', formData)
-    console.log('formError: ', formError)
-    console.log('user: ', user)
+
     useEffect(() => {
+        setErrorMessage('')
+        setIsLoading(true)
         const tkn = window.localStorage.getItem('token')
         const user = JSON.parse(window.localStorage.getItem('user') as string) as Required<TypeUserWithId> | null | undefined | ''
         if (!tkn || !user) return navigate('/login')
         const getUserApiTimeout = setTimeout(() => {
 
-            API.getUser(user._id).then((res) => {
-                if (res.ok === false) { setErrorMessage('Error getting user data'); return }
-                return res.json()
-            }).then((response: GetUserAPIResponse) => {
+            API.getUser(user._id).then((res) => res.json()).then((response: GetUserAPIResponse) => {
                 console.log('response: ', response)
-                if (!response) { setErrorMessage('Could not retrieve user data'); return }
+                if (!response || response.status === 'failed') { setErrorMessage('Could not retrieve user data'); return }
                 setUser(() => response.data?.user);
                 storeTokenAndUser(user, tkn)
                 setFormData((prevData) => {
-                    return setFormDataHelper(response, prevData)
+                    return setFormDataHelper(response.data.user, prevData)
                 })
+                setIsLoading(false)
             }).catch((e: Error) => {
                 console.log(e)
+                setIsLoading(false)
                 setErrorMessage(e.message);
             });
         }, 0)
@@ -204,11 +203,14 @@ export const UserDetails = () => {
             <div className={classes.ProfilePicture} style={{ marginTop: '-5%', position: 'absolute', left: '110%', top: '50%' }} >
                 <p style={{ textAlign: 'left' }}>Update Profile Picture</p>
                 <input required value={formData.file} type="file" onChange={(e) => {
+                    setFormError({...formError, file: ''})
                     const files = (e.target as HTMLInputElement).files
                     if (files) {
                         const file = files[0]
-                        if (file.size > 50 * 1000 * 1000) return setFormError((prevState) => { return { ...prevState, file: 'File is too large' } })
-                        setFile(files && files[0])
+                        console.log('file.size: ', file, '<', 2 * 1024 * 1024, '>')
+                        if (!(file.type.includes('image'))) return setFormError((prevState) => { return { ...prevState, file: 'File must be an image' } })
+                        if (file.size > 2 * 1024 * 1024) return setFormError((prevState) => { return { ...prevState, file: 'File is too large. Picture should be less than 2MB' } })
+                        setFile(file)
                         const reader = new FileReader();
 
                         // Set up the event handler for when the file is loaded
@@ -218,9 +220,10 @@ export const UserDetails = () => {
 
                         // Read the file as a data URL
                         reader.readAsDataURL(file);
-                        setFormData({ ...formData, file: files[0].name })
+                        setFormData({ ...formData, file: file.name })
                     }
                 }} />
+                {formError.file && <p style={{color: 'var(--red-color)'}}>{formError.file}</p>}
             </div>
         </div>
     )
@@ -230,12 +233,13 @@ export const UserDetails = () => {
             <h1>Profile details</h1>
             <br />
             <section>
-                {popUpMessage && (
-                    <Modal onClick={() => setPopUpMessage('')}>
-                        <p>{popUpMessage}</p>
+                {isLoading && <SpinnerModal />}
+                {(popupMessage && !isLoading) && (
+                    <Modal onClick={() => setPopupMessage('')}>
+                        <p style={{ color: 'green' }}>{popupMessage}</p>
                     </Modal>)
                 }
-                {errorMessage && <ErrorMessageModal onClick={()=>setErrorMessage('')} errorMessage={errorMessage} />}
+                {(errorMessage && !isLoading && !popupMessage) && <ErrorMessageModal onClick={() => setErrorMessage('')} errorMessage={errorMessage} />}
                 <Form >
                     {user && (
                         <div >

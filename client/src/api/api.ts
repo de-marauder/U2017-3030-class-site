@@ -2,12 +2,13 @@ import { DefaultHeadersType, LoginData, SignUpData, TypeUser } from "../utils/ty
 import { API_BASE_URL } from "../utils/vars"
 
 type AuthApiConfig = {
-    method: 'POST',
+    method: 'POST' | 'DELETE' | 'PUT' | 'PATCH',
     headers: Partial<DefaultHeadersType>,
-    body: string
+    body?: string
 }
 
 export class Api {
+    API_BASE_URL = API_BASE_URL
 
     protected headers = () => {
         return {
@@ -15,8 +16,6 @@ export class Api {
             'authorization': 'Bearer ' + this.authToken() || ''
         }
     }
-    API_BASE_URL = API_BASE_URL
-    // constructor() { console.log(this.headers()) }
 
     async getUser(userId: string) {
         const config = {
@@ -56,6 +55,14 @@ export class Api {
         } as AuthApiConfig
         delete config.headers.authorization
         return fetch(`${this.API_BASE_URL}/auth/signup`, config)
+    }
+    async logout() {
+        const config = {
+            method: 'DELETE',
+            headers: { ...this.headers() },
+        } as AuthApiConfig
+        console.log(config.body)
+        return fetch(`${this.API_BASE_URL}/auth/logout`, config)
     }
 
     async getS3SecureUrl({ objectName, key }: { objectName: string, key: string }) {

@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
 dotenv.config()
-export const env = (envVar: string) => {
-    return process.env[envVar] || ''
+export const env = (envVar: string): string => {
+  return process.env[envVar] ?? ''
 }

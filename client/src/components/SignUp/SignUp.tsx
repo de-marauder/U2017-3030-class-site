@@ -11,6 +11,7 @@ import { ErrorMessageModal } from '../../utils/reusableComponents/ErrorMessgeMod
 import { initialSignUpFormData } from '../../utils/vars';
 import classes from './SignUp.module.css';
 import { Button } from '../../utils/reusableComponents/Button/Button';
+import { SpinnerModal } from '../../utils/reusableComponents/Spinner/Spinner';
 
 
 type SignUpFormInputType = FormInputType & { confirmPassword: string };
@@ -19,6 +20,7 @@ export default function SignUp() {
     const navigate = useNavigate()
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
     const [signUpError, setSignUpError] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<Partial<SignUpFormInputType>>({ ...initialSignUpFormData })
     const [formData, setFormData] = useState<Partial<SignUpFormInputType>>({ ...initialSignUpFormData })
 
@@ -28,30 +30,29 @@ export default function SignUp() {
     })
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-
+        setIsLoading(true)
         const payload = {
             matNo: formData.matriculation_number,
             email: formData.email,
             password: formData.password,
-        } as SignUpFormInputType & { matNo: string }
+        } as SignUpFormInputType & { matNo: string };
+
         await API.signup(payload)
-            .then(res => {
-                const r = res.json()
-                if (!res.ok) {
-                    setSignUpError('Error signing up...')
-                    // return r as Promise<FailedResponse>
-                }
-                return r as Promise<FailedResponse & { data: { user: TypeUser }, token: string }>
-            }).then((r) => {
+            .then(res => res.json())
+            .then((r: FailedResponse & { data: { user: TypeUser }, token: string }) => {
+                setIsLoading(false);
                 if (!r) { setSignUpError('Bad response'); return }
                 if (r.status === 'failed') setSignUpError(r.message)
                 const { data, token } = r
-
                 console.log(data.user, token);
                 storeTokenAndUser(data.user, token);
                 navigate('/user');
             })
-            .catch((err) => console.log('Fetch errorMessage', err.message))
+            .catch((err) => {
+                setIsLoading(false)
+                setSignUpError('Error signing in')
+                console.log('Fetch errorMessage', err.message)
+            })
     }
 
     const SignUpForm = (
@@ -76,7 +77,8 @@ export default function SignUp() {
     return (
         <>
             <h1>Sign Up</h1>
-            {signUpError && <ErrorMessageModal onClick={()=>setSignUpError('')} errorMessage={signUpError} />}
+            {isLoading && <SpinnerModal />}
+            {(signUpError && !isLoading) && <ErrorMessageModal onClick={() => setSignUpError('')} errorMessage={signUpError} />}
             <section className={classes.Signup}>
                 <Form>
                     <div >

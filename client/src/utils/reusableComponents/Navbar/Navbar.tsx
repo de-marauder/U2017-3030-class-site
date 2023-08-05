@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from "../Button/Button";
 import classes from './Navbar.module.css'
 import { Logo } from "../Logo/Logo";
+import { TypeUserWithId } from "../../types";
 
 export const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
@@ -43,7 +44,7 @@ export const Navbar = () => {
 }
 
 
-type DashboardNavbarProps = { clearCreds: () => void }
+type DashboardNavbarProps = { clearCreds: () => void, user: TypeUserWithId }
 export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ clearCreds }) => {
     // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const navigate = useNavigate();
