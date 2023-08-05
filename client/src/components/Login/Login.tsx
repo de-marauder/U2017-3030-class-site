@@ -10,6 +10,7 @@ import { Input } from '../../utils/reusableComponents/Input/Input';
 import { ErrorMessageModal } from '../../utils/reusableComponents/ErrorMessgeModal';
 import classes from './Login.module.css'
 import { Button } from '../../utils/reusableComponents/Button/Button';
+import { SpinnerModal } from '../../utils/reusableComponents/Spinner/Spinner';
 
 
 export default function Login() {
@@ -20,6 +21,7 @@ export default function Login() {
         password: '',
     })
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [loginError, setLoginError] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<Partial<FormInputType>>({
         email: '',
@@ -32,7 +34,7 @@ export default function Login() {
     })
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-
+        setIsLoading(true)
         // send link and other data to server
         const payload = {
             email: formData.email,
@@ -41,12 +43,9 @@ export default function Login() {
         } as Required<typeof formData> & { matNo: string }
 
         await API.login(payload)
-            .then(res => {
-                console.log('res: ', res);
-                const r = res.json()
-                if (res.ok === false) { setLoginError('An error occured...'); }
-                return r as Promise<{ status: string, message: string, data: { user: TypeUserWithId }, token: string }> | Promise<null>
-            }).then((response) => {
+            .then(res => res.json())
+            .then((response: { status: string, message: string, data: { user: TypeUserWithId }, token: string } | null) => {
+                setIsLoading(false)
 
                 console.log(response)
                 if (!response) return setLoginError('An error occured...');
@@ -55,7 +54,11 @@ export default function Login() {
                 storeTokenAndUser(data.user, response.token)
                 navigate('/user');
             })
-            .catch((err) => console.log('Fetch error', err.message))
+            .catch((err) => {
+                setIsLoading(false)
+                setLoginError(err.message ?? "Error logging in")
+                console.log('Fetch error', err.message);
+        })
     }
 
     const LoginForm = (
@@ -80,7 +83,8 @@ export default function Login() {
         <>
             <h1>Login</h1>
             <section className={classes.Login}>
-                {loginError && <ErrorMessageModal onClick={()=>setLoginError('')} errorMessage={loginError} />}
+                {isLoading && <SpinnerModal />}
+                {(loginError && !isLoading) && <ErrorMessageModal onClick={() => setLoginError('')} errorMessage={loginError} />}
                 <Form>
                     <div >
                         {LoginForm}

@@ -7,6 +7,10 @@
     border: none;
     flex-grow: 1;
 }
+.Input:disabled {
+    background-color: #888;
+    color: #ccc;
+}
 .Label {
     font-weight: bolder;
     font-size: 1.1em;

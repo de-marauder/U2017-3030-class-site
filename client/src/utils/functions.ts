@@ -49,19 +49,19 @@ export const formatDate = (date: string, config?: {normal?: boolean}) => {
     return config && config.normal ? `${d[1]}-${d[0]}-${d[2]}` : `${d[2]}-${d[0]}-${d[1]}`
 }
 
-export const setFormDataHelper = (response: GetUserAPIResponse, prevData: UserFormData) => {
+export const setFormDataHelper = (user: GetUserAPIResponse['data']['user'], prevData: UserFormData) => {
     const newData: Partial<TypeUser> = {}
-    for (const [k, v] of Object.entries(response.data.user)) {
+    for (const [k, v] of Object.entries(user)) {
         if (k in prevData) newData[k as keyof typeof newData] = v as string;
     }
     console.log('newData: ', newData)
     return {
         ...prevData,
         ...newData,
-        first_name: response.data.user.firstName,
-        last_name: response.data.user.lastName,
-        other_name: response.data.user.otherName,
-        matriculation_number: response.data.user.matNo,
+        first_name: user.firstName,
+        last_name: user.lastName,
+        other_name: user.otherName,
+        matriculation_number: user.matNo,
         dob: newData.dob ? formatDate(newData.dob) : '',
     }
 }

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { TypeUser } from "../../utils/types"
+import { TypeUser, TypeUserWithId } from "../../utils/types"
 import { API } from "../../api/api"
 import { UserCard } from "./UserCard"
 import classes from './AllUsers.module.css'
@@ -9,23 +8,27 @@ import uniportLogo from '../../assets/images/uniport_logo.png';
 import { Button } from "../../utils/reusableComponents/Button/Button"
 import ReactToPrint from "react-to-print"
 import { ErrorMessageModal } from "../../utils/reusableComponents/ErrorMessgeModal"
+import { SpinnerModal } from "../../utils/reusableComponents/Spinner/Spinner"
 
 
 export const AllUsers = () => {
-    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [users, setUsers] = useState<TypeUser[]>()
     const printableContent = useRef(null)
     useEffect(() => {
-        // const token = window.localStorage.getItem('token')
-        // if (!token) return navigate('/login')
+        setIsLoading(true)
         API.getAllUsers().then((res) => res.json())
-            .then((response) => {
+            .then((response: {data: {users: TypeUserWithId[]}, status: 'success' | 'failed', message: string}) => {
                 console.log('response: ', response)
-                if (response.status === 'failed') setErrorMessage(response.message || 'Error getting class members')
-                setUsers([...response?.data?.users]);
+                if (response.status === 'failed' || !response?.data?.users) setErrorMessage(response.message || 'Error getting class members')
+                setUsers([...response.data.users]);
+                setIsLoading(false)
+            }).catch((err: Error) => {
+                setIsLoading(false)
+                setErrorMessage(err.message || 'Something went wrong')
             })
-    }, [navigate])
+    }, [])
     // console.log('users: ', typeof users, users)
     const logoWrapperStyles = {
         maxWidth: '150px',
@@ -43,7 +46,8 @@ export const AllUsers = () => {
                 content={() => printableContent.current}
                 trigger={() => <Button style={buttonStyles} onClick={() => { window.print() }}>Print</Button>}
             />
-            {errorMessage && <ErrorMessageModal onClick={()=>setErrorMessage('')} errorMessage={errorMessage} />}
+            {isLoading && <SpinnerModal  />}
+            {(errorMessage && !isLoading) && <ErrorMessageModal onClick={() => setErrorMessage('')} errorMessage={errorMessage} />}
             <div ref={printableContent} className={classes.Album}>
                 <h2>Chemical Engineering UNIPORT</h2>
                 <ImageWrapper style={logoWrapperStyles} imageLink={uniportLogo} imageAlt="uniport logo" />
