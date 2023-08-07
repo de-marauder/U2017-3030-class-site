@@ -37,7 +37,7 @@ export const createUser = ErrorHandler(async (req: Request, res: Response) => {
   const token = generateToken({ id: user._id, role: user.role }, '100000000h')
   user.authToken = token
   user.isActivated = true
-  user.no = +(user.matNo.slice(3))
+  user.no = +(user.matNo.slice(-3))
   await user.save()
   const u = user as PartialUser
   delete u.authToken
