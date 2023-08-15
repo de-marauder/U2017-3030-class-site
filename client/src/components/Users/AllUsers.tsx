@@ -19,7 +19,7 @@ export const AllUsers = () => {
     useEffect(() => {
         setIsLoading(true)
         API.getAllUsers().then((res) => res.json())
-            .then((response: {data: {users: TypeUserWithId[]}, status: 'success' | 'failed', message: string}) => {
+            .then((response: { data: { users: TypeUserWithId[] }, status: 'success' | 'failed', message: string }) => {
                 console.log('response: ', response)
                 if (response.status === 'failed' || !response?.data?.users) setErrorMessage(response.message || 'Error getting class members')
                 setUsers([...response.data.users]);
@@ -40,13 +40,26 @@ export const AllUsers = () => {
         top: '2rem',
         zIndex: '1001'
     }
+
+    const Counter = () => {
+        const styles = {
+            backgroundColor: 'var(--light-color)',
+            borderRadius: 'var(--border-radius)',
+            color: 'var(--dark-color)',
+            width: 'fit-content',
+            margin: 'auto',
+            padding: '10px'
+        }
+        return <div style={styles}><strong>{users ? users.length : 0} Students</strong></div>
+    }
     return (
         <div className={classes.AlbumWrapper}>
+            <Counter/>
             <ReactToPrint
                 content={() => printableContent.current}
                 trigger={() => <Button style={buttonStyles} onClick={() => { window.print() }}>Print</Button>}
             />
-            {isLoading && <SpinnerModal  />}
+            {isLoading && <SpinnerModal />}
             {(errorMessage && !isLoading) && <ErrorMessageModal onClick={() => setErrorMessage('')} errorMessage={errorMessage} />}
             <div ref={printableContent} className={classes.Album}>
                 <h2>Chemical Engineering UNIPORT</h2>
